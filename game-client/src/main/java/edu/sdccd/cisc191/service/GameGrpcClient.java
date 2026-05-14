@@ -55,11 +55,23 @@ public class GameGrpcClient {
      * - Preserve the ranked value.
      */
     public static JoinMatchRequest buildJoinMatchRequest(String playerName, String difficulty, boolean ranked) {
-        return JoinMatchRequest.newBuilder()
-                .setPlayerName("TODO")
-                .setDifficulty("TODO")
-                .setRanked(false)
-                .build();
+
+        if (playerName == null || playerName.isBlank()) {
+            playerName = "Player";
+        } else {
+            playerName = playerName.trim();
+        }
+
+        if (difficulty == null || difficulty.isBlank()) {
+            difficulty = "Normal";
+        } else {
+            difficulty = difficulty.trim();
+        }
+
+        return JoinMatchRequest.newBuilder(); {
+            JoinMatchRequest request =
+                    buildJoinMatchRequest(playerName, difficulty, ranked);
+        }
     }
 
     public Task<MatchResultResponse> playMatchTask(

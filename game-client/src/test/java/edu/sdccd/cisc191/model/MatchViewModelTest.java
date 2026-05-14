@@ -116,7 +116,7 @@ class MatchViewModelTest {
         executorService.shutdown();
         assertTrue(executorService.awaitTermination(5, TimeUnit.SECONDS));
 
-        assertEquals(totalUpdates, model.getCompletedMatchCount(),
+        assertEquals(totalUpdates, model.getCompletedMatchCount().
                 "TODO 7: The completed-match count should not lose updates when many threads record results.");
         assertTrue(model.isMatchOver());
         assertEquals("Ada", model.getWinnerName());

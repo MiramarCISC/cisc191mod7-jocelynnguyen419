@@ -62,6 +62,7 @@ public class GameController {
         String playerName = getPlayerName();
         String difficulty = difficultyComboBox.getValue();
         boolean ranked = rankedMatchCheckBox.isSelected();
+        String logMessage = buildJoinLogMessage(playerName, difficulty, ranked);
 
         statusLabel.setText("Status: Joining match...");
         matchLog.appendText("Joining " + (ranked ? "ranked" : "casual")
@@ -211,6 +212,30 @@ public class GameController {
      */
     public static String buildJoinLogMessage(String playerName, String difficulty, boolean ranked) {
         return "TODO: build join log message";
+
+        if (playerName == null || playerName.isBlank()) {
+            playerName = "Player";
+        } else {
+            playerName = playerName.trim();
+        }
+
+        if (difficulty == null || difficulty.isBlank()) {
+            difficulty = "Normal";
+        } else {
+            difficulty = difficulty.trim();
+        }
+
+        String matchType;
+
+        if (ranked) {
+            matchType = "ranked";
+        } else {
+            matchType = "casual";
+        }
+
+        return "Joining " + matchType
+                + " match as " + playerName
+                + " on " + difficulty + " difficulty...";
     }
 
     /**
@@ -225,6 +250,12 @@ public class GameController {
     public static void runOnFxThread(Runnable action) {
         if (action != null) {
             action.run();
+        }
+
+        if (Platform.isFxApplicationThread()) {
+            action.run();
+        } else {
+            Platform.runLater(action);
         }
     }
 

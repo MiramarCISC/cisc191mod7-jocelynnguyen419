@@ -65,7 +65,13 @@ public class MatchViewModel {
         setWinnerName(winnerName);
         matchOver = true;
     }
+    public synchronized int getCompletedMatchCount() {
+        return completedMatchCount;
+    }
 
+    public synchronized void resetCompletedMatchCount() {
+        completedMatchCount = 0;
+    }
     public boolean hasJoinedMatch() {
         return matchId != null && !matchId.isBlank();
     }
@@ -88,7 +94,25 @@ public class MatchViewModel {
      * - Use "ranked" when ranked is true, otherwise "casual".
      */
     public String buildMatchSummary(String difficulty, boolean ranked) {
-        return "TODO: build match summary";
+        if (matchId == null || matchId.isBlank()) {
+            return "No Match";
+        }
+
+        if (difficulty == null || difficulty.isBlank()) {
+            return "Normal";
+        }
+
+        String matchType;
+        if (ranked) {
+            matchType = "ranked";
+        } else {
+            matchType = "casual";
+        }
+
+        return "Match " + matchId + ": "
+                + player.getName() + "vs. "
+                + opponent.getName()
+                + " (" + difficulty + ", " + matchType + ")";
     }
 
     public void resetLocalState() {
