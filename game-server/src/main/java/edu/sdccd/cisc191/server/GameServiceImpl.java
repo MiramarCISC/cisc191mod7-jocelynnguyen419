@@ -36,7 +36,7 @@ public class GameServiceImpl extends GameServiceGrpc.GameServiceImplBase {
         boolean ranked = request.getRanked();
         String matchId = UUID.randomUUID().toString();
 
-        String opponentName = "Bot";
+        String opponentName = "Bot (" + difficulty + ")";
 
         ServerMatch match = new ServerMatch(
                 matchId,
@@ -89,19 +89,19 @@ public class GameServiceImpl extends GameServiceGrpc.GameServiceImplBase {
             boolean ranked
     ) {
         if (matchId == null || matchId.isBlank()) {
-            return "No match";
+            matchId = "No match";
         }
 
         if (playerName == null || playerName.isBlank()) {
-            return "Player";
+            playerName = "Player";
         }
 
         if (opponentName == null || opponentName.isBlank()) {
-            return "Bot";
+            opponentName =  "Bot";
         }
 
         if (difficulty == null || difficulty.isBlank()) {
-            return "Normal";
+            difficulty = "Normal";
         }
 
         String matchType;
