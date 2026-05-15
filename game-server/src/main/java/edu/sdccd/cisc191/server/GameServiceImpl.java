@@ -36,7 +36,7 @@ public class GameServiceImpl extends GameServiceGrpc.GameServiceImplBase {
         boolean ranked = request.getRanked();
         String matchId = UUID.randomUUID().toString();
 
-        String opponentName = "Bot";
+        String opponentName = "Bot (" + difficulty + ")";
 
         ServerMatch match = new ServerMatch(
                 matchId,
@@ -52,7 +52,7 @@ public class GameServiceImpl extends GameServiceGrpc.GameServiceImplBase {
         JoinMatchResponse response = JoinMatchResponse.newBuilder()
                 .setMatchId(matchId)
                 .setPlayerName(playerName)
-                .setOpponentName(opponentName + " (" + difficulty + ")")
+                .setOpponentName(opponentName)
                 .setMessage("Joined " + (ranked ? "ranked" : "casual")
                         + " match on " + difficulty + " difficulty successfully")
                 .setSummary(buildJoinSummary(
@@ -108,8 +108,7 @@ public class GameServiceImpl extends GameServiceGrpc.GameServiceImplBase {
         String matchType = ranked ? "ranked" : "casual";
 
         return "Match " + matchId + ": "
-                + playerName + " vs "
-                + opponentName
+                + playerName + " vs " + opponentName
                 + " (" + difficulty + ", " + matchType + ")";
     }
 

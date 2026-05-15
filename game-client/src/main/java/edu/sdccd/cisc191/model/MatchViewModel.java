@@ -1,5 +1,7 @@
 package edu.sdccd.cisc191.model;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class MatchViewModel {
     private String matchId;
     private final Player player = new Player("Player");
@@ -9,7 +11,7 @@ public class MatchViewModel {
 
     // TODO 7: Make this shared counter thread-safe.
     // Use either an AtomicInteger field or synchronized methods so background tasks cannot lose updates.
-    private int completedMatchCount = 0;
+    private final AtomicInteger completedMatchCount = new AtomicInteger(0);
 
     public String getMatchId() {
         return matchId;
@@ -57,16 +59,16 @@ public class MatchViewModel {
      * - Protect shared state from race conditions.
      */
     public void recordCompletedMatchThreadSafely(String winnerName) {
-        completedMatchCount = completedMatchCount + 1;
+        completedMatchCount.incrementAndGet();
         setWinnerName(winnerName);
         matchOver = true;
     }
-    public synchronized int getCompletedMatchCount() {
-        return completedMatchCount;
+    public int getCompletedMatchCount() {
+        return completedMatchCount.get();
     }
 
-    public synchronized void resetCompletedMatchCount() {
-        completedMatchCount = 0;
+    public void resetCompletedMatchCount() {
+        completedMatchCount.set(0);
     }
     public boolean hasJoinedMatch() {
         return matchId != null && !matchId.isBlank();
@@ -117,6 +119,6 @@ public class MatchViewModel {
         opponent.setName("Opponent");
         matchOver = false;
         winnerName = "";
-        completedMatchCount = 0;
+        completedMatchCount.set(0);
     }
 }
