@@ -36,10 +36,12 @@ public class GameServiceImpl extends GameServiceGrpc.GameServiceImplBase {
         boolean ranked = request.getRanked();
         String matchId = UUID.randomUUID().toString();
 
+        String opponentName = "Bot (" + difficulty + ")";
+
         ServerMatch match = new ServerMatch(
                 matchId,
                 playerName,
-                "Bot (" + difficulty + ")",
+                opponentName,
                 difficulty,
                 ranked
         );
@@ -49,10 +51,17 @@ public class GameServiceImpl extends GameServiceGrpc.GameServiceImplBase {
 
         JoinMatchResponse response = JoinMatchResponse.newBuilder()
                 .setMatchId(matchId)
-                .setPlayerName(match.playerName())
-                .setOpponentName(match.opponentName())
-                .setMessage("Joined " + match.matchType() + " match " + matchId
-                        + " on " + difficulty + " difficulty. Click Play Match to let the server choose a winner.")
+                .setPlayerName(playerName)
+                .setOpponentName(opponentName)
+                .setMessage("Joined " + (ranked ? "ranked" : "casual")
+                        + " match on " + difficulty + " difficulty successfully")
+                .setSummary(buildJoinSummary(
+                        matchId,
+                        playerName,
+                        opponentName,
+                        difficulty,
+                        ranked
+                ))
                 .build();
 
         responseObserver.onNext(response);
@@ -62,10 +71,10 @@ public class GameServiceImpl extends GameServiceGrpc.GameServiceImplBase {
     /**
      * TODO 6: Complete this server-side summary helper, then use it in JoinMatchResponse
      * after adding the new summary field to the .proto file.
-     *
+     * <p>
      * Expected format:
      * Match match-001: Ada vs Bot (Hard, ranked)
-     *
+     * <p>
      * Requirements:
      * - Use "No match" when matchId is null or blank.
      * - Use "Player" when playerName is null or blank.
@@ -80,7 +89,27 @@ public class GameServiceImpl extends GameServiceGrpc.GameServiceImplBase {
             String difficulty,
             boolean ranked
     ) {
-        return "TODO: build join summary";
+        if (matchId == null || matchId.isBlank()) {
+            return "No match";
+        }
+
+        if (playerName == null || playerName.isBlank()) {
+            playerName = "Player";
+        }
+
+        if (opponentName == null || opponentName.isBlank()) {
+            opponentName = "Bot";
+        }
+
+        if (difficulty == null || difficulty.isBlank()) {
+            difficulty = "Normal";
+        }
+
+        String matchType = ranked ? "ranked" : "casual";
+
+        return "Match " + matchId + ": "
+                + playerName + " vs " + opponentName
+                + " (" + difficulty + ", " + matchType + ")";
     }
 
     @Override
