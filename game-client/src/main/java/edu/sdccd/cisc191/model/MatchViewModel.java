@@ -43,10 +43,6 @@ public class MatchViewModel {
         this.winnerName = winnerName == null ? "" : winnerName;
     }
 
-    public int getCompletedMatchCount() {
-        return completedMatchCount;
-    }
-
     /**
      * TODO 7: Complete this method using thread-safe programming.
      *

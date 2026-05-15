@@ -68,10 +68,11 @@ public class GameGrpcClient {
             difficulty = difficulty.trim();
         }
 
-        return JoinMatchRequest.newBuilder(); {
-            JoinMatchRequest request =
-                    buildJoinMatchRequest(playerName, difficulty, ranked);
-        }
+        return JoinMatchRequest.newBuilder()
+                .setPlayerName(playerName)
+                .setDifficulty(difficulty)
+                .setRanked(ranked)
+                .build();
     }
 
     public Task<MatchResultResponse> playMatchTask(

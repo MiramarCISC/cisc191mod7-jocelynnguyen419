@@ -65,9 +65,7 @@ public class GameController {
         String logMessage = buildJoinLogMessage(playerName, difficulty, ranked);
 
         statusLabel.setText("Status: Joining match...");
-        matchLog.appendText("Joining " + (ranked ? "ranked" : "casual")
-                + " match as " + playerName
-                + " on " + difficulty + " difficulty...\n");
+        matchLog.appendText(buildJoinLogMessage(playerName, difficulty, ranked) + "\n");
 
         Task<JoinMatchResponse> task = grpcClient.joinMatchTask(
                 playerName,
@@ -211,7 +209,6 @@ public class GameController {
      * - Trim playerName and difficulty.
      */
     public static String buildJoinLogMessage(String playerName, String difficulty, boolean ranked) {
-        return "TODO: build join log message";
 
         if (playerName == null || playerName.isBlank()) {
             playerName = "Player";
