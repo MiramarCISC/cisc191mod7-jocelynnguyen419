@@ -33,11 +33,8 @@ public class GameGrpcClient {
         return new Task<>() {
             @Override
             protected JoinMatchResponse call() {
-                JoinMatchRequest request = JoinMatchRequest.newBuilder()
-                        .setPlayerName(playerName)
-                        .setDifficulty(difficulty)
-                        .setRanked(ranked)
-                        .build();
+                JoinMatchRequest request =
+                        buildJoinMatchRequest(playerName, difficulty, ranked);
 
                 return blockingStub.joinMatch(request);
             }
